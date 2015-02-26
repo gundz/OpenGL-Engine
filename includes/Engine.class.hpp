@@ -3,9 +3,7 @@
 # define	ENGINE_CLASS_HPP
 
 # include <iostream>
-# include <SDL.h>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# include <constant.h>
 
 class Engine
 {
@@ -14,6 +12,7 @@ class Engine
 		typedef struct s_input
 		{
 			char		key[SDL_NUM_SCANCODES];
+			char		button[8];
 			int			m_x;
 			int			m_y;
 			int			m_r_x;
@@ -32,7 +31,8 @@ class Engine
 
 		bool				init(std::string name, int RX, int RY);
 		void				poolInputs(void);
-		bool				getInput(int scancode);
+		bool				getKInput(int scancode);
+		bool				getMInput(int scancode);
 
 //	private:
 		SDL_Window			*_window;

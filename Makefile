@@ -3,9 +3,17 @@ NAME = Project
 CC =  g++
 #CFLAGS = -Wall -Wextra -Werror -O3 -lm
 CFLAGS = -g -lm
-CFLAGS += `sdl2-config --cflags` -framework OpenGL -framework GLUT -framework Cocoa -framework OpenCL
+CFLAGS += `sdl2-config --cflags` -std=gnu++11
 
-LFLAGS += `sdl2-config --libs` -framework OpenGL -framework GLUT -framework Cocoa -framework OpenCL
+LFLAGS += `sdl2-config --libs`
+
+PLATFORM := $(shell uname)
+
+ifeq "$(PLATFORM)" "Darwin" #MAC
+CFLAGS = -framework OpenGL -framework GLUT -framework Cocoa -framework OpenCL
+else ifeq "$(PLATFORM)" "Linux" #LINUX
+CFLAGS = -lGL -lGLU -lglut
+endif
 
 #CFLAGS += -I /usr/include/SDL2
 #LFLAGS += -lSDL2_image

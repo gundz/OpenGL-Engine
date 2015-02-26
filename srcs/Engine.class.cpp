@@ -96,15 +96,33 @@ Engine::poolInputs(void)
 			this->in.key[event.key.keysym.scancode] = 0;
 			break ;
 		}
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+			this->in.button[event.button.button] = 1;
+			break ;
+		}
+		if (event.type == SDL_MOUSEBUTTONUP)
+		{
+			this->in.button[event.button.button] = 0;
+			break ;
+		}
 		else if (event.type == SDL_QUIT)
 			this->run = 0;
 	}
 }
 
 bool
-Engine::getInput(int scancode)
+Engine::getKInput(int scancode)
 {
-	if (this->in.key[scancode])
+	if (this->in.key[scancode] == 1)
+		return (true);
+	return (false);
+}
+
+bool
+Engine::getMInput(int scancode)
+{
+	if (this->in.button[scancode] == 1)
 		return (true);
 	return (false);
 }
