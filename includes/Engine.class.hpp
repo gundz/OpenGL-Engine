@@ -29,10 +29,10 @@ class Engine
 
 		Engine				&operator=(Engine const &rhs);
 
-		bool				init(std::string name, int RX, int RY);
+		bool				init(std::string name, const int RX, const int RY);
 		void				poolInputs(void);
-		bool				getKInput(int scancode);
-		bool				getMInput(int scancode);
+		bool				getKInput(const int scancode);
+		bool				getMInput(const int scancode);
 
 //	private:
 		SDL_Window			*_window;

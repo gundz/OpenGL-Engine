@@ -2,34 +2,40 @@
 #include <Engine.class.hpp>
 #include <constant.h>
 
-int		angX = 0;
-int		angY = 0;
-int		angZ = 0;
+float		x = 0;
+float		y = 0;
+float		z = 1;
+float		lx = 0;
+float		ly = 0;
 
 void
 drawLandMark(void)
 {
+	glPushMatrix();
+	glTranslated(0, 0, 0);
+
 	glBegin(GL_LINES);
 
 	glColor3ub(255, 0, 0);
-	glVertex2d(0, 0);
-	glVertex2d(0.5, 0);
+	glVertex3d(0, 0, 0);
+	glVertex3d(10, 0, 0);
 
 	glColor3ub(0, 255, 0);
-	glVertex2d(0, 0);
-	glVertex2d(0, 0.5);
+	glVertex3d(0, 0, 0);
+	glVertex3d(0, 10, 0);
+
+	glColor3ub(0, 0, 255);
+	glVertex3d(0, 0, 0);
+	glVertex3d(0, 0, 10);
 
 	glEnd();
+
+	glPopMatrix();
 }
 
 void
 drawCube(void)
 {
-	//glPushMatrix();
-
-	glRotated(angX, 1, 0, 1);
-	glRotated(angY, 0, 1, 0);
-	glRotated(angZ, 0, 0, 1);
 
 	glBegin(GL_QUADS);
 	glColor3ub(255, 0, 0);
@@ -56,7 +62,7 @@ drawCube(void)
 	glColor3ub(255, 255, 0);
 	glVertex3d(-1, -1, 1);
 	glVertex3d(-1, -1, -1);
-	glVertex3d(-1, 1, -1);
+	glVertex3d(-1, 1, -	1);
 	glVertex3d(-1, 1, 1);
 
 	glBegin(GL_QUADS);
@@ -73,41 +79,46 @@ drawCube(void)
 	glVertex3d(-1, 1, -1);
 	glVertex3d(-1, -1, -1);
 	glEnd();
-
-	//glPopMatrix();
 }
+
+#include <cmath>
 
 void
 mainGame(Engine &engine)
 {
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		std::cout << z << std::endl;
 		if (engine.getKInput(SDL_SCANCODE_A))
-			angZ -= 1;
+			x -= 0.1;
 		if (engine.getKInput(SDL_SCANCODE_D))
-			angZ += 1;
-
+			x += 0.1;
 		if (engine.getKInput(SDL_SCANCODE_W))
-			angY -= 1;
+			y += 0.1;
 		if (engine.getKInput(SDL_SCANCODE_S))
-			angY += 1;
+			y -= 0.1;
+
+		if (engine.getKInput(SDL_SCANCODE_UP))
+			z -= 0.1;
+		if (engine.getKInput(SDL_SCANCODE_DOWN))
+			z += 0.1;
+		if (z <= 0.0)
+			z = 0;
 
 		if (engine.getMInput(SDL_BUTTON_LEFT))
 		{
-			angY += engine.in.m_r_y;
-			angZ += engine.in.m_r_x;
+			lx += fmod(engine.in.m_r_x, 0.05);
+			ly += fmod(engine.in.m_r_y, 0.05);
 		}
 
-		if (engine.getKInput(SDL_SCANCODE_Q))
-			angX -= 1;
-		if (engine.getKInput(SDL_SCANCODE_E))
-			angX += 1;
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		gluLookAt(3, 4, 2, 0, 0, 0, 0, 0, 1);
+
+		gluLookAt(x, y, z, 0, 0, 0, 0, 1, 0);
+		std::cout << "x : " << x << " - y : " << y << " - z : " << z << std::endl;
 
 		drawCube();
+		drawLandMark();
 
 		glFlush();
 		SDL_GL_SwapWindow(engine._window);
@@ -121,10 +132,9 @@ main(void)
 	engine.init("Test de ouf", 800, 600);
 
 	glEnable(GL_DEPTH_TEST);
-
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(70, (double)800 / 600, 1, 1000);
+	gluPerspective(70, (double)engine._RX / engine._RY, 1, 1000);
 
 	while (!engine.getKInput(SDL_SCANCODE_ESCAPE) && engine.run == 1)
 	{

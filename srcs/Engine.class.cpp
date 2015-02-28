@@ -40,7 +40,7 @@ std::ostream
 }
 
 bool
-Engine::init(std::string name, int RX, int RY)
+Engine::init(std::string name, const int RX, const int RY)
 {
 	if( SDL_Init(SDL_INIT_VIDEO) < 0 )
 	{
@@ -52,12 +52,14 @@ Engine::init(std::string name, int RX, int RY)
 	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 	
-	
 	// Double Buffer
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
 	this->_window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, RX, RY, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+
+	this->_RX = RX;
+	this->_RY = RY;
 
 	if (this->_window == 0)
 	{
@@ -80,7 +82,7 @@ Engine::init(std::string name, int RX, int RY)
 void
 Engine::poolInputs(void)
 {
-	SDL_Event event;
+	SDL_Event	event;
 
 	SDL_GetMouseState(&this->in.m_x, &this->in.m_y);
 	SDL_GetRelativeMouseState(&this->in.m_r_x, &this->in.m_r_y);
@@ -112,7 +114,7 @@ Engine::poolInputs(void)
 }
 
 bool
-Engine::getKInput(int scancode)
+Engine::getKInput(const int scancode)
 {
 	if (this->in.key[scancode] == 1)
 		return (true);
@@ -120,7 +122,7 @@ Engine::getKInput(int scancode)
 }
 
 bool
-Engine::getMInput(int scancode)
+Engine::getMInput(const int scancode)
 {
 	if (this->in.button[scancode] == 1)
 		return (true);
