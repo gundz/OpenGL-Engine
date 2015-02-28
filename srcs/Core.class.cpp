@@ -1,27 +1,27 @@
 
-#include "Engine.class.hpp"
+#include "Core.class.hpp"
 
-Engine::Engine(void)
+Core::Core(void)
 {
-	this->run = 1;
+	this->run = true;
 	return ;
 }
 
-Engine::Engine(Engine const &src)
+Core::Core(Core const &src)
 {
 	*this = src;
 	return ;
 }
 
-Engine::~Engine(void)
+Core::~Core(void)
 {
 	SDL_DestroyWindow(this->_window);
 	SDL_Quit();
 	return ;
 }
 
-Engine
-&Engine::operator=(Engine const &rhs)
+Core
+&Core::operator = (Core const &rhs)
 {
 	if (this != &rhs)
 	{
@@ -31,16 +31,16 @@ Engine
 	return (*this);
 }
 
-std::ostream
-&operator<<(std::ostream &o, Engine const &i)
+std::ostream &
+operator << (std::ostream &o, Core const &i)
 {
-	o	<< "Class : Engine" << std::endl;
+	o	<< "Class : Core" << std::endl;
 	(void)i;
 	return (o);
 }
 
 bool
-Engine::init(std::string name, const int RX, const int RY)
+Core::init(std::string name, const int RX, const int RY)
 {
 	if( SDL_Init(SDL_INIT_VIDEO) < 0 )
 	{
@@ -80,7 +80,7 @@ Engine::init(std::string name, const int RX, const int RY)
 }
 
 void
-Engine::poolInputs(void)
+Core::poolInputs(void)
 {
 	SDL_Event	event;
 
@@ -90,41 +90,41 @@ Engine::poolInputs(void)
 	{
 		if (event.type == SDL_KEYDOWN)
 		{
-			this->in.key[event.key.keysym.scancode] = 1;
+			this->in.key[event.key.keysym.scancode] = true;
 			break ;
 		}
 		else if (event.type == SDL_KEYUP)
 		{
-			this->in.key[event.key.keysym.scancode] = 0;
+			this->in.key[event.key.keysym.scancode] = false;
 			break ;
 		}
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			this->in.button[event.button.button] = 1;
+			this->in.button[event.button.button] = true;
 			break ;
 		}
 		if (event.type == SDL_MOUSEBUTTONUP)
 		{
-			this->in.button[event.button.button] = 0;
+			this->in.button[event.button.button] = false;
 			break ;
 		}
 		else if (event.type == SDL_QUIT)
-			this->run = 0;
+			this->run = false;
 	}
 }
 
 bool
-Engine::getKInput(const int scancode)
+Core::getKInput(const int scancode)
 {
-	if (this->in.key[scancode] == 1)
+	if (this->in.key[scancode] == true)
 		return (true);
 	return (false);
 }
 
 bool
-Engine::getMInput(const int scancode)
+Core::getMInput(const int scancode)
 {
-	if (this->in.button[scancode] == 1)
+	if (this->in.button[scancode] == true)
 		return (true);
 	return (false);
 }

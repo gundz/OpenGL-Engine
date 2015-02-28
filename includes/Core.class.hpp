@@ -1,33 +1,33 @@
 
-#ifndef		ENGINE_CLASS_HPP
-# define	ENGINE_CLASS_HPP
+#ifndef		CORE_CLASS_HPP
+# define	CORE_CLASS_HPP
 
 # include <iostream>
 # include <constant.h>
 
-class Engine
+class Core
 {
 	public:
 
 		typedef struct s_input
 		{
-			char		key[SDL_NUM_SCANCODES];
-			char		button[8];
-			int			m_x;
-			int			m_y;
-			int			m_r_x;
-			int			m_r_y;
-		}				t_input;
+			int				key[SDL_NUM_SCANCODES];
+			int				button[8];
+			int				m_x;
+			int				m_y;
+			int				m_r_x;
+			int				m_r_y;
+		}					t_input;
 
 		bool				run;
 		t_input				in;
 
 
-		Engine(void);
-		Engine( Engine const &src );
-		~Engine(void);
+		Core(void);
+		Core(Core const &src);
+		~Core(void);
 
-		Engine				&operator=(Engine const &rhs);
+		Core				&operator = (Core const &rhs);
 
 		bool				init(std::string name, const int RX, const int RY);
 		void				poolInputs(void);
@@ -41,6 +41,6 @@ class Engine
 		SDL_GLContext		_GLContext;
 };
 
-std::ostream				&operator<<(std::ostream &o, Engine const &i);
+std::ostream				&operator << (std::ostream &o, Core const &i);
 
 #endif

@@ -1,6 +1,7 @@
 #include <iostream>
-#include <Engine.class.hpp>
+#include <Core.class.hpp>
 #include <constant.h>
+#include <TVector3.class.hpp>
 
 float		x = 0;
 float		y = 0;
@@ -84,29 +85,29 @@ drawCube(void)
 #include <cmath>
 
 void
-mainGame(Engine &engine)
+mainGame(Core &Core)
 {
 		std::cout << z << std::endl;
-		if (engine.getKInput(SDL_SCANCODE_A))
+		if (Core.getKInput(SDL_SCANCODE_A))
 			x -= 0.1;
-		if (engine.getKInput(SDL_SCANCODE_D))
+		if (Core.getKInput(SDL_SCANCODE_D))
 			x += 0.1;
-		if (engine.getKInput(SDL_SCANCODE_W))
+		if (Core.getKInput(SDL_SCANCODE_W))
 			y += 0.1;
-		if (engine.getKInput(SDL_SCANCODE_S))
+		if (Core.getKInput(SDL_SCANCODE_S))
 			y -= 0.1;
 
-		if (engine.getKInput(SDL_SCANCODE_UP))
+		if (Core.getKInput(SDL_SCANCODE_UP))
 			z -= 0.1;
-		if (engine.getKInput(SDL_SCANCODE_DOWN))
+		if (Core.getKInput(SDL_SCANCODE_DOWN))
 			z += 0.1;
 		if (z <= 0.0)
 			z = 0;
 
-		if (engine.getMInput(SDL_BUTTON_LEFT))
+		if (Core.getMInput(SDL_BUTTON_LEFT))
 		{
-			lx += fmod(engine.in.m_r_x, 0.05);
-			ly += fmod(engine.in.m_r_y, 0.05);
+			lx += fmod(Core.in.m_r_x, 0.05);
+			ly += fmod(Core.in.m_r_y, 0.05);
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -114,32 +115,32 @@ mainGame(Engine &engine)
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		gluLookAt(x, y, z, 0, 0, 0, 0, 1, 0);
+		gluLookAt(x, y, z, lx, ly, 0, 1, 1, 1);
 		std::cout << "x : " << x << " - y : " << y << " - z : " << z << std::endl;
 
 		drawCube();
 		drawLandMark();
 
 		glFlush();
-		SDL_GL_SwapWindow(engine._window);
+		SDL_GL_SwapWindow(Core._window);
 }
 
 int
 main(void)
 {
-	Engine          engine;
+	Core          Core;
 
-	engine.init("Test de ouf", 800, 600);
+	Core.init("Test de ouf", 800, 600);
 
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(70, (double)engine._RX / engine._RY, 1, 1000);
+	gluPerspective(70, (double)Core._RX / Core._RY, 1, 1000);
 
-	while (!engine.getKInput(SDL_SCANCODE_ESCAPE) && engine.run == 1)
+	while (!Core.getKInput(SDL_SCANCODE_ESCAPE) && Core.run == true)
 	{
-		engine.poolInputs();
-		mainGame(engine);
+		Core.poolInputs();
+		mainGame(Core);
 	}
 	return (0);
 }

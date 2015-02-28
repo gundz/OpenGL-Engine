@@ -26,7 +26,7 @@ SRC =		\
 
 
 SRC +=	main.cpp \
-		Engine.class.cpp \
+		Core.class.cpp \
 
 OBJ = $(patsubst %.cpp, $(PATH_OBJ)/%.o, $(SRC))
 
