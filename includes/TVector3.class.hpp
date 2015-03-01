@@ -118,6 +118,26 @@ class TVector3
 			return (ret);
 		}
 
+		TVector3
+		crossProduct(const TVector3 &v) const
+		{
+			TVector3		ret;
+
+			ret.setX(this->_y * v.getZ() - this->_z * v.getY());
+			ret.setY(this->_z * v.getX() - this->_x * v.getZ());
+			ret.setZ(this->_x * v.getY() - this->_y * v.getX());
+			return (ret);
+		}
+
+		T
+		getLength(void) const
+		{
+			return (sqrt(
+				this->_x * this->_x +
+				this->_y * this->_y + 
+				this->_z * this->_z));
+		}
+
 		T
 		getX(void) const
 		{
@@ -160,5 +180,15 @@ class TVector3
 		T				_y;
 		T				_z;
 };
+
+template <typename T>
+std::ostream &
+operator << (std::ostream &o, const TVector3<T> &i)
+{
+	o << "x : " << i.getX() <<
+		" - y : " << i.getY() <<
+		" - z : " << i.getZ();
+	return (o);
+}
 
 #endif

@@ -116,7 +116,6 @@ mainGame(Core &Core)
 		glLoadIdentity();
 
 		gluLookAt(x, y, z, lx, ly, 0, 1, 1, 1);
-		std::cout << "x : " << x << " - y : " << y << " - z : " << z << std::endl;
 
 		drawCube();
 		drawLandMark();

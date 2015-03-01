@@ -20,8 +20,8 @@ Core::~Core(void)
 	return ;
 }
 
-Core
-&Core::operator = (Core const &rhs)
+Core &
+Core::operator = (Core const &rhs)
 {
 	if (this != &rhs)
 	{
