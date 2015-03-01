@@ -3,7 +3,7 @@
 # define	CORE_CLASS_HPP
 
 # include <iostream>
-# include <constant.h>
+# include <constant.hpp>
 
 class Core
 {

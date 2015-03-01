@@ -1,5 +1,5 @@
-#ifndef		CONSTANT_H
-# define	CONSTANT_H
+#ifndef		CONSTANT_HPP
+# define	CONSTANT_HPP
 
 # ifdef linux
 # include <GL/glu.h>

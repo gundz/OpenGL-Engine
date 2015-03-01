@@ -2,7 +2,7 @@ NAME = Project
 
 CC =  g++
 #CFLAGS = -Wall -Wextra -Werror -O3 -lm
-CFLAGS = -g -lm
+CFLAGS = -Wall -Werror -Wextra -g -lm
 CFLAGS += `sdl2-config --cflags` -std=gnu++11
 
 LFLAGS += `sdl2-config --libs`
@@ -26,7 +26,9 @@ SRC =		\
 
 
 SRC +=	main.cpp \
+		Vector3d.class.cpp \
 		Core.class.cpp \
+		Camera.class.cpp \
 
 OBJ = $(patsubst %.cpp, $(PATH_OBJ)/%.o, $(SRC))
 

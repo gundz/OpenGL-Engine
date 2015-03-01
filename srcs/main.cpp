@@ -1,7 +1,7 @@
 #include <iostream>
 #include <Core.class.hpp>
-#include <constant.h>
-#include <TVector3.class.hpp>
+#include <constant.hpp>
+#include <Vector3d.class.hpp>
 
 float		x = 0;
 float		y = 0;
@@ -83,11 +83,11 @@ drawCube(void)
 }
 
 #include <cmath>
+#include <Camera.class.hpp>
 
 void
-mainGame(Core &Core)
+mainGame(Core &Core, Camera &camera)
 {
-		std::cout << z << std::endl;
 		if (Core.getKInput(SDL_SCANCODE_A))
 			x -= 0.1;
 		if (Core.getKInput(SDL_SCANCODE_D))
@@ -115,7 +115,8 @@ mainGame(Core &Core)
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		gluLookAt(x, y, z, lx, ly, 0, 1, 1, 1);
+		camera.animate();
+		camera.look();
 
 		drawCube();
 		drawLandMark();
@@ -127,19 +128,14 @@ mainGame(Core &Core)
 int
 main(void)
 {
-	Core          Core;
+	Core			core;
+	Camera			camera(core, Vector3D(0, 0, 0));
 
-	Core.init("Test de ouf", 800, 600);
-
-	glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(70, (double)Core._RX / Core._RY, 1, 1000);
-
-	while (!Core.getKInput(SDL_SCANCODE_ESCAPE) && Core.run == true)
+	core.init("Test de ouf", 800, 600);
+	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{
-		Core.poolInputs();
-		mainGame(Core);
+		core.poolInputs();
+		mainGame(core, camera);
 	}
 	return (0);
 }

@@ -1,5 +1,5 @@
 
-#include "Core.class.hpp"
+#include <Core.class.hpp>
 
 Core::Core(void)
 {
@@ -77,6 +77,11 @@ Core::init(std::string name, const int RX, const int RY)
 		SDL_Quit();
 		return (false);
 	}
+
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(70, (double)RX / RY, 1, 1000);
 }
 
 void
