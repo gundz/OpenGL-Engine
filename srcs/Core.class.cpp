@@ -1,9 +1,54 @@
 
 #include <Core.class.hpp>
 
-Core::Core(void)
+Core::Core(std::string name, const int RX, const int RY) : _name(name), _RX(RX), _RY(RY)
 {
-	this->run = true;
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		std::cout << "Erreur lors de l'initialisation de la SDL : " << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return ;
+	}
+	// Version d'OpenGL
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+	
+	// Double Buffer
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+	_window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, RX, RY, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+
+	if (this->_window == 0)
+	{
+		std::cout << "Erreur lors de la creation de la fenetre : " << SDL_GetError() << std::endl;
+		SDL_Quit();
+
+		return ;
+	}
+
+	this->_GLContext = SDL_GL_CreateContext(this->_window);
+	if (this->_GLContext == 0)
+	{
+		std::cout << SDL_GetError() << std::endl;
+		SDL_DestroyWindow(this->_window);
+		SDL_Quit();
+		return ;
+	}
+
+	run = true;
+	for (int i = 0; i < SDL_NUM_SCANCODES; i++)
+		in.key[i] = false;
+	for (int i = 0; i < 8; i++)
+		in.button[i] = false;
+	_fps.fps = 0;
+	_fps.current = 0;
+	_fps.update = 0;
+
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(70, (double)RX / RY, 1, 1000);
 	return ;
 }
 
@@ -31,57 +76,29 @@ Core::operator = (Core const &rhs)
 	return (*this);
 }
 
-std::ostream &
-operator << (std::ostream &o, Core const &i)
+void
+Core::preMain(void)
 {
-	o	<< "Class : Core" << std::endl;
-	(void)i;
-	return (o);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-bool
-Core::init(std::string name, const int RX, const int RY)
+void
+Core::postMain(void)
 {
-	if( SDL_Init(SDL_INIT_VIDEO) < 0 )
+	glFlush();
+	SDL_GL_SwapWindow(_window);
+
+	std::ostringstream			oss;
+
+	if ((_fps.update = SDL_GetTicks()) - _fps.current >= 1000)
 	{
-		std::cout << "Erreur lors de l'initialisation de la SDL : " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return (false);
+		_fps.current = _fps.update;
+		oss << _name << " - " << _fps.fps << " FPS";
+		_fps.text = oss.str();
+		SDL_SetWindowTitle(_window, _fps.text.c_str());
+		_fps.fps = 0;
 	}
-	// Version d'OpenGL
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-	//SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-	
-	// Double Buffer
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-
-	this->_window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, RX, RY, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
-
-	this->_RX = RX;
-	this->_RY = RY;
-
-	if (this->_window == 0)
-	{
-		std::cout << "Erreur lors de la creation de la fenetre : " << SDL_GetError() << std::endl;
-		SDL_Quit();
-
-		return ( false );
-	}
-
-	this->_GLContext = SDL_GL_CreateContext(this->_window);
-	if (this->_GLContext == 0)
-	{
-		std::cout << SDL_GetError() << std::endl;
-		SDL_DestroyWindow(this->_window);
-		SDL_Quit();
-		return (false);
-	}
-
-	glEnable(GL_DEPTH_TEST);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(70, (double)RX / RY, 1, 1000);
+	_fps.fps++;
 }
 
 void
@@ -96,7 +113,7 @@ Core::poolInputs(void)
 		if (event.type == SDL_KEYDOWN)
 		{
 			this->in.key[event.key.keysym.scancode] = true;
-			break ;
+ 			break ;
 		}
 		else if (event.type == SDL_KEYUP)
 		{
@@ -132,4 +149,18 @@ Core::getMInput(const int scancode)
 	if (this->in.button[scancode] == true)
 		return (true);
 	return (false);
+}
+
+SDL_Window *
+Core::getWindow(void) const
+{
+	return (this->_window);
+}
+
+std::ostream &
+operator << (std::ostream &o, Core const &i)
+{
+	o	<< "Class : Core" << std::endl;
+	(void)i;
+	return (o);
 }

@@ -90,57 +90,30 @@ drawCube(int size, TVec3<float> pos)
 #include <Camera.class.hpp>
 
 void
-mainGame(Core &Core, Camera &camera)
+mainEngine(const Core &core, Camera &camera)
 {
-		if (Core.getKInput(SDL_SCANCODE_A))
-			x -= 0.1;
-		if (Core.getKInput(SDL_SCANCODE_D))
-			x += 0.1;
-		if (Core.getKInput(SDL_SCANCODE_W))
-			y += 0.1;
-		if (Core.getKInput(SDL_SCANCODE_S))
-			y -= 0.1;
+	std::cout << camera << std::endl;
 
-		if (Core.getKInput(SDL_SCANCODE_UP))
-			z -= 0.1;
-		if (Core.getKInput(SDL_SCANCODE_DOWN))
-			z += 0.1;
-		if (z <= 0.0)
-			z = 0;
-
-		if (Core.getMInput(SDL_BUTTON_LEFT))
-		{
-			lx += fmod(Core.in.m_r_x, 0.05);
-			ly += fmod(Core.in.m_r_y, 0.05);
-		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
-		camera.animate();
-		camera.look();
-
-		drawCube(1, TVec3<float>(0, 0, 0));
-
-		drawLandMark();
-
-		glFlush();
-		SDL_GL_SwapWindow(Core._window);
+	camera.animate();
+	camera.look();
+	drawCube(1, TVec3<float>(0, 0, 0));
+	drawLandMark();
 }
 
 int
 main(void)
 {
-	Core			core;
-	Camera			camera(core, TVec3<float>(0, 0, 0));
+	Core			core("Test de ouf", 800, 600);
+	Camera			camera(core);
 
-	core.init("Test de ouf", 800, 600);
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{
+		core.preMain();
 		core.poolInputs();
-		mainGame(core, camera);
+
+		mainEngine(core, camera);
+
+		core.postMain();
 	}
 	return (0);
 }

@@ -1,7 +1,12 @@
 #include <Camera.class.hpp>
 
-Camera::Camera(Core &core, const TVec3<float> &pos) : _core(&core), _pos(pos)
+Camera::Camera(Core &core) : _core(&core)
 {
+	_pos.set(0, 0, 0);
+	_target.set(0, 0, 0);
+	_forward.set(0, 0, 0);
+	_left.set(0, 0, 0);
+
 	_phi = 0;
 	_theta = 0;
 	_speed = 0.01;
@@ -10,7 +15,7 @@ Camera::Camera(Core &core, const TVec3<float> &pos) : _core(&core), _pos(pos)
 
 	SDL_ShowCursor(SDL_DISABLE);
 	SDL_SetRelativeMouseMode(SDL_TRUE);
-	SDL_SetWindowGrab(_core->_window, SDL_TRUE);
+	SDL_SetWindowGrab(_core->getWindow(), SDL_TRUE);
 	return ;
 }
 
@@ -22,7 +27,7 @@ Camera::Camera(Camera const &src)
 
 Camera::~Camera(void)
 {
-	SDL_SetWindowGrab(_core->_window, SDL_FALSE);
+	SDL_SetWindowGrab(_core->getWindow(), SDL_FALSE);
 	SDL_SetRelativeMouseMode(SDL_FALSE);
 	SDL_ShowCursor(SDL_ENABLE);
 	return ;
@@ -38,11 +43,17 @@ Camera::operator = (Camera const &rhs)
 	return (*this);
 }
 
-std::ostream &
-operator << (std::ostream &o, Camera const &i)
+TVec3<float>
+Camera::getPosition(void) const
 {
-	o	<< "Camera: " << &i;
-	return (o);
+	return (_pos);
+}
+
+void
+Camera::setPosition(TVec3<float> const &pos)
+{
+	_pos = pos;
+	_target = _pos + _forward;
 }
 
 void
@@ -89,8 +100,19 @@ Camera::vectorFromAngles(void)
 void
 Camera::look(void)
 {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
 	gluLookAt(
 		_pos.x, _pos.y, _pos.z,
 		_target.x, _target.y, _target.z,
 		0, 0, 1);
+}
+
+std::ostream &
+operator << (std::ostream &o, Camera const &i)
+{
+	o	<< "Camera: " << std::endl
+		<< "pos: " << i._pos;
+	return (o);
 }

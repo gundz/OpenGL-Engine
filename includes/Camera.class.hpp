@@ -10,17 +10,20 @@ class Camera
 {
 	public:
 
-		Camera(Core &core, const TVec3<float> &pos);
+		Camera(Core &core);
 		Camera(Camera const &src);
 		~Camera(void);
 
 		Camera			&operator = (Camera const &rhs);
 
+		TVec3<float>	getPosition(void) const;
+		void			setPosition(TVec3<float> const &vec);
+
 		void			animate(void);
 		void			vectorFromAngles(void);
 		void			look(void);
 
-	protected:
+	//protected:
 
 		Core			*_core;
 		TVec3<float>	_pos;
