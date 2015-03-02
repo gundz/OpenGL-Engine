@@ -2,7 +2,7 @@
 # define	CAMERA_CLASS_HPP
 
 # include <constant.hpp>
-# include <Vector3d.class.hpp>
+# include <TVec3.class.hpp>
 # include <Core.class.hpp>
 # include <iostream>
 
@@ -10,7 +10,7 @@ class Camera
 {
 	public:
 
-		Camera(Core &core, const Vector3D &pos);
+		Camera(Core &core, const TVec3<float> &pos);
 		Camera(Camera const &src);
 		~Camera(void);
 
@@ -23,10 +23,10 @@ class Camera
 	protected:
 
 		Core			*_core;
-		Vector3D		_pos;
-		Vector3D		_target;
-		Vector3D		_forward;
-		Vector3D		_left;
+		TVec3<float>	_pos;
+		TVec3<float>	_target;
+		TVec3<float>	_forward;
+		TVec3<float>	_left;
 		double			_theta;
 		double			_phi;
 		double			_sensivity;

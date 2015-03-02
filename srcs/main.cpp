@@ -1,7 +1,7 @@
 #include <iostream>
 #include <Core.class.hpp>
 #include <constant.hpp>
-#include <Vector3d.class.hpp>
+#include <TVec3.class.hpp>
 
 float		x = 0;
 float		y = 0;
@@ -35,51 +35,55 @@ drawLandMark(void)
 }
 
 void
-drawCube(void)
+drawCube(int size, TVec3<float> pos)
 {
+	glPushMatrix();
+	glTranslated(pos.x, pos.y, pos.z);
 
 	glBegin(GL_QUADS);
 	glColor3ub(255, 0, 0);
-	glVertex3d(1, 1, 1);
-	glVertex3d(1, 1, -1);
-	glVertex3d(-1, 1, -1);
-	glVertex3d(-1, 1, 1);
+	glVertex3d(size, size, size);
+	glVertex3d(size, size, -size);
+	glVertex3d(-size, size, -size);
+	glVertex3d(-size, size, size);
 
 	glBegin(GL_QUADS);
 	glColor3ub(0, 255, 0);
-	glVertex3d(1, -1, 1);
-	glVertex3d(1, -1, -1);
-	glVertex3d(1, 1, -1);
-	glVertex3d(1, 1, 1);
+	glVertex3d(size, -size, size);
+	glVertex3d(size, -size, -size);
+	glVertex3d(size, size, -size);
+	glVertex3d(size, size, size);
 
 	glBegin(GL_QUADS);
 	glColor3ub(0, 0, 255);
-	glVertex3d(1, -1, 1);
-	glVertex3d(1, -1, -1);
-	glVertex3d(-1, -1, -1);
-	glVertex3d(-1, -1, 1);
+	glVertex3d(size, -size, size);
+	glVertex3d(size, -size, -size);
+	glVertex3d(-size, -size, -size);
+	glVertex3d(-size, -size, size);
 
 	glBegin(GL_QUADS);
 	glColor3ub(255, 255, 0);
-	glVertex3d(-1, -1, 1);
-	glVertex3d(-1, -1, -1);
-	glVertex3d(-1, 1, -	1);
-	glVertex3d(-1, 1, 1);
+	glVertex3d(-size, -size, size);
+	glVertex3d(-size, -size, -size);
+	glVertex3d(-size, size, -	size);
+	glVertex3d(-size, size, size);
 
 	glBegin(GL_QUADS);
 	glColor3ub(0, 255, 255);
-	glVertex3d(1, -1, 1);
-	glVertex3d(1, 1, 1);
-	glVertex3d(-1, 1, 1);
-	glVertex3d(-1, -1, 1);
+	glVertex3d(size, -size, size);
+	glVertex3d(size, size, size);
+	glVertex3d(-size, size, size);
+	glVertex3d(-size, -size, size);
 
 	glBegin(GL_QUADS);
 	glColor3ub(255, 255, 255);
-	glVertex3d(1, -1, -1);
-	glVertex3d(1, 1, -1);
-	glVertex3d(-1, 1, -1);
-	glVertex3d(-1, -1, -1);
+	glVertex3d(size, -size, -size);
+	glVertex3d(size, size, -size);
+	glVertex3d(-size, size, -size);
+	glVertex3d(-size, -size, -size);
 	glEnd();
+
+	glPopMatrix();
 }
 
 #include <cmath>
@@ -118,7 +122,8 @@ mainGame(Core &Core, Camera &camera)
 		camera.animate();
 		camera.look();
 
-		drawCube();
+		drawCube(1, TVec3<float>(0, 0, 0));
+
 		drawLandMark();
 
 		glFlush();
@@ -129,7 +134,7 @@ int
 main(void)
 {
 	Core			core;
-	Camera			camera(core, Vector3D(0, 0, 0));
+	Camera			camera(core, TVec3<float>(0, 0, 0));
 
 	core.init("Test de ouf", 800, 600);
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)

@@ -1,12 +1,16 @@
 #include <Camera.class.hpp>
 
-Camera::Camera(Core &core, const Vector3D &pos) : _core(&core), _pos(pos)
+Camera::Camera(Core &core, const TVec3<float> &pos) : _core(&core), _pos(pos)
 {
 	_phi = 0;
 	_theta = 0;
 	_speed = 0.01;
 	_sensivity = 0.2;
 	vectorFromAngles();
+
+	SDL_ShowCursor(SDL_DISABLE);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_SetWindowGrab(_core->_window, SDL_TRUE);
 	return ;
 }
 
@@ -18,6 +22,9 @@ Camera::Camera(Camera const &src)
 
 Camera::~Camera(void)
 {
+	SDL_SetWindowGrab(_core->_window, SDL_FALSE);
+	SDL_SetRelativeMouseMode(SDL_FALSE);
+	SDL_ShowCursor(SDL_ENABLE);
 	return ;
 }
 
@@ -50,14 +57,18 @@ Camera::animate(void)
 	if (_core->getKInput(SDL_SCANCODE_RIGHT))
 		_pos -= _left;
 
+	_theta -= _core->in.m_r_x * _sensivity;
+	_phi -= _core->in.m_r_y * _sensivity;
+	vectorFromAngles();
+
 	_target = _pos + _forward;
 }
 
 void
 Camera::vectorFromAngles(void)
 {
-	double					r_temp;
-	static const Vector3D	up(0, 0, 1);
+	double						r_temp;
+	static const TVec3<float>	up(0, 0, 1);
 	
 	if (_phi > 89)
 		_phi = 89;
@@ -78,14 +89,6 @@ Camera::vectorFromAngles(void)
 void
 Camera::look(void)
 {
-	std::cout <<
-		_pos.x << " " <<
-		_pos.y << " " <<
-		_pos.z << " " <<
-		_target.x << " " <<
-		_target.y << " " <<
-		_target.z << " " <<
-		std::endl;
 	gluLookAt(
 		_pos.x, _pos.y, _pos.z,
 		_target.x, _target.y, _target.z,
