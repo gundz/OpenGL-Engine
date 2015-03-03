@@ -9,7 +9,8 @@ Camera::Camera(Core &core) : _core(&core)
 
 	_phi = 0;
 	_theta = 0;
-	_speed = 0.01;
+	// _speed = 0.01;
+	_speed = 1;
 	_sensivity = 0.2;
 	vectorFromAngles();
 

@@ -47,8 +47,9 @@ Core::Core(std::string name, const int RX, const int RY) : _name(name), _RX(RX),
 
 	glEnable(GL_DEPTH_TEST);
 	glMatrixMode(GL_PROJECTION);
+	//glEnable(GL_POLYGON_SMOOTH);
 	glLoadIdentity();
-	gluPerspective(70, (double)RX / RY, 1, 1000);	
+	gluPerspective(70, (double)RX / RY, 0.01, 20000);	
 	return ;
 }
 

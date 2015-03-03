@@ -91,28 +91,32 @@ drawCube(int size, TVec3<float> pos)
 #include <Camera.class.hpp>
 
 void
-mainEngine(Camera &camera)
+mainEngine(Camera &camera, Object &object)
 {
-	//std::cout << camera << std::endl;
 
 	camera.animate();
 	camera.look();
-	drawCube(1, TVec3<float>(0, 0, 0));
-	drawLandMark();
+	//glPolygonMode(GL_FRONT, GL_FILL);
+
+	object.show();
 }
+
 
 int
 main(void)
 {
 	Core			core("Test de ouf", 800, 600);
 	Camera			camera(core);
+	Object			object;
+
+	object.loadObj("ressources/cube.obj");
 
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{
 		core.preMain();
 		core.poolInputs();
 
-		mainEngine(camera);
+		mainEngine(camera, object);
 
 		core.postMain();
 	}

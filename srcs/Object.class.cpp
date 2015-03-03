@@ -31,36 +31,44 @@ Object::operator = (Object const &rhs)
 void
 Object::loadObj(std::string path)
 {
-	(void)path;
-/*	std::ifstream			file(path.c_str(), std::ios::in);
+	std::ifstream			file(path.c_str(), std::ios::in);
 	std::string				line;
 
 	std::string				s;
 	float					x, y, z;
-	int						a, a1, b, b1, c, c1;
-	char					w;
+	std::string				s1, s2, s3;
 	if (file)
 	{
-		// while (file >> s >> x >> y >> z)
-		// {
-		// 	if (s == "v")
-		// 		std::cout << "v : " << x << " " << " y : " << y << " z : " << z << std::endl;
-		// }
-		// file.seekg(0);
-		while (file >> s >> a >> a1 >> b >> b1 >> c >> c1)
+		while (std::getline(file, line))
 		{
-			if (s == "f")
-				std::cout << "f : " << 
-				a << "/" << a1 << " " << 
-				b << "/" << b1 << " " << 
-				c << "/" << c1 << std::endl;
-		}
+			std::stringstream		issV(line);
+			
+			if (issV >> s >> x >> y >> z)
+			{
+				if (s == "v")
+				{
+					insertVertex(Vec3f(x, y, z));
+				}
+			}
 
+			std::stringstream		issF(line);
+			if (issF >> s >> s1 >> s2 >> s3)
+			{
+				if (s == "f")
+				{
+					insertFace(Vec3i(
+							atoi(s1.c_str()), 
+							atoi(s2.c_str()), 
+							atoi(s3.c_str())
+							));
+				}
+			}
+		}
 
 		file.close();
 	}
 	else
-		std::cerr << "Unable to open : " << path << std::endl;*/
+		std::cerr << "Unable to open : " << path << std::endl;
 }
 
 void
@@ -70,9 +78,44 @@ Object::insertVertex(const Vec3f v)
 }
 
 void
-Object::insertFace(const t_face f)
+Object::insertFace(const Vec3i f)
 {
-	_faces.insert(std::pair<int, t_face>(_nbFaces++, f));
+	_faces.insert(std::pair<int, Vec3i>(_nbFaces++, f));
+}
+
+void
+Object::showVertex(void)
+{
+	for (unsigned int i = 0; i < _vertex.size(); i++)
+		std::cout << i << " -  x : " << _vertex[i].x << " y : " << _vertex[i].y << " z : " << _vertex[i].z << std::endl;
+	std::cout << std::endl;
+}
+
+void
+Object::showFaces(void)
+{
+	for (unsigned int i = 0; i < _faces.size(); i++)
+		std::cout << i << " - " << _faces[i].x << " " << _faces[i].y << " " << _faces[i].z << std::endl;
+	std::cout << std::endl;
+}
+
+void
+Object::show(void)
+{
+	TVec3<float>		tmp;
+
+	for (unsigned int i = 0; i < _faces.size(); i++)
+	{
+		glBegin(GL_TRIANGLES);
+		tmp = _vertex[_faces[i].x - 1];
+		
+		glVertex3d(tmp.x, tmp.y, tmp.z);
+		tmp = _vertex[_faces[i].y - 1];
+		glVertex3d(tmp.x, tmp.y, tmp.z);
+		tmp = _vertex[_faces[i].z - 1];
+		glVertex3d(tmp.x, tmp.y, tmp.z);
+		glEnd();
+	}
 }
 
 std::ostream &
