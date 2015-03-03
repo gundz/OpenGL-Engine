@@ -90,17 +90,21 @@ drawCube(int size, TVec3<float> pos)
 #include <cmath>
 #include <Camera.class.hpp>
 
+
 void
 mainEngine(Camera &camera, Object &object)
 {
 
 	camera.animate();
 	camera.look();
+
 	//glPolygonMode(GL_FRONT, GL_FILL);
 
 	object.show();
-}
+	//drawLandMark();
 
+
+}
 
 int
 main(void)
@@ -109,7 +113,7 @@ main(void)
 	Camera			camera(core);
 	Object			object;
 
-	object.loadObj("ressources/cube.obj");
+	object.loadObj("ressources/TinyTina/TinyTina.obj");
 
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{

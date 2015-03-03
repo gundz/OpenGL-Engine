@@ -15,9 +15,6 @@ else ifeq "$(PLATFORM)" "Linux" #LINUX
 CFLAGS += -lGL -lGLU -lglut
 endif
 
-# CFLAGS += -I /usr/include/SDL2
-# LFLAGS += -lSDL2_image
-
 PATH_INC = includes/
 PATH_OBJ = obj
 PATH_SRC = srcs/
