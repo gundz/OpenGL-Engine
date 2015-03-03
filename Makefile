@@ -10,9 +10,9 @@ LFLAGS += `sdl2-config --libs`
 PLATFORM := $(shell uname)
 
 ifeq "$(PLATFORM)" "Darwin" #MAC
-CFLAGS = -framework OpenGL -framework GLUT -framework Cocoa -framework OpenCL
+CFLAGS += -framework OpenGL -framework GLUT -framework Cocoa -framework OpenCL -Wno-deprecated-declarations
 else ifeq "$(PLATFORM)" "Linux" #LINUX
-CFLAGS = -lGL -lGLU -lglut
+CFLAGS += -lGL -lGLU -lglut
 endif
 
 #CFLAGS += -I /usr/include/SDL2

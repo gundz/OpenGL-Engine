@@ -91,7 +91,7 @@ drawCube(int size, TVec3<float> pos)
 #include <Camera.class.hpp>
 
 void
-mainEngine(const Core &core, Camera &camera)
+mainEngine(Camera &camera)
 {
 	//std::cout << camera << std::endl;
 
@@ -100,7 +100,7 @@ mainEngine(const Core &core, Camera &camera)
 	drawCube(1, TVec3<float>(0, 0, 0));
 	drawLandMark();
 }
-/*
+
 int
 main(void)
 {
@@ -112,18 +112,9 @@ main(void)
 		core.preMain();
 		core.poolInputs();
 
-		mainEngine(core, camera);
+		mainEngine(camera);
 
 		core.postMain();
 	}
-	return (0);
-}
-*/
-int
-main(void)
-{
-	Object			object;
-
-	object.loadObj("ressources/test.obj");
 	return (0);
 }

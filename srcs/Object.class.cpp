@@ -31,7 +31,8 @@ Object::operator = (Object const &rhs)
 void
 Object::loadObj(std::string path)
 {
-	std::ifstream			file(path.c_str(), std::ios::in);
+	(void)path;
+/*	std::ifstream			file(path.c_str(), std::ios::in);
 	std::string				line;
 
 	std::string				s;
@@ -59,7 +60,7 @@ Object::loadObj(std::string path)
 		file.close();
 	}
 	else
-		std::cerr << "Unable to open : " << path << std::endl;
+		std::cerr << "Unable to open : " << path << std::endl;*/
 }
 
 void
