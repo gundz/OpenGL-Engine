@@ -3,37 +3,7 @@
 #include <Core.class.hpp>
 #include <TVec3.class.hpp>
 #include <Object.class.hpp>
-
-float		x = 0;
-float		y = 0;
-float		z = 1;
-float		lx = 0;
-float		ly = 0;
-
-void
-drawLandMark(void)
-{
-	glPushMatrix();
-	glTranslated(0, 0, 0);
-
-	glBegin(GL_LINES);
-
-	glColor3ub(255, 0, 0);
-	glVertex3d(0, 0, 0);
-	glVertex3d(10, 0, 0);
-
-	glColor3ub(0, 255, 0);
-	glVertex3d(0, 0, 0);
-	glVertex3d(0, 10, 0);
-
-	glColor3ub(0, 0, 255);
-	glVertex3d(0, 0, 0);
-	glVertex3d(0, 0, 10);
-
-	glEnd();
-
-	glPopMatrix();
-}
+#include <Camera.class.hpp>
 
 void
 drawCube(int size, TVec3<float> pos)
@@ -87,23 +57,34 @@ drawCube(int size, TVec3<float> pos)
 	glPopMatrix();
 }
 
-#include <cmath>
-#include <Camera.class.hpp>
-
+void
+drawSquare(const int x, const int y, const int size)
+{
+	int z;
+		z = 0;
+	glBegin(GL_QUADS);
+	glVertex3d(x, y, z);
+	glVertex3d(x + size, y, z);
+	glVertex3d(x + size, y + size, z);
+	glVertex3d(x, y + size, z);
+	glEnd();
+}
 
 void
-mainEngine(Camera &camera, Object &object)
+mainEngine(Core &core, Camera &camera)
 {
 
 	camera.animate();
 	camera.look();
 
-	//glPolygonMode(GL_FRONT, GL_FILL);
+	glPolygonMode(GL_FRONT, GL_LINE);
 
-	object.show();
-	//drawLandMark();
-
-
+	for (int y = 0; y < 100; y++)
+	{
+		for (int x = 0; x < 100; x++)
+			drawSquare(x, y, 1);
+	}
+	core.drawLandMark();
 }
 
 int
@@ -111,16 +92,13 @@ main(void)
 {
 	Core			core("Test de ouf", 800, 600);
 	Camera			camera(core);
-	Object			object;
-
-	object.loadObj("ressources/TinyTina/TinyTina.obj");
 
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{
 		core.preMain();
 		core.poolInputs();
 
-		mainEngine(camera, object);
+		mainEngine(core, camera);
 
 		core.postMain();
 	}

@@ -104,6 +104,31 @@ Core::postMain(void)
 }
 
 void
+Core::drawLandMark(void)
+{
+	glPushMatrix();
+	glTranslated(0, 0, 0);
+
+	glBegin(GL_LINES);
+
+	glColor3ub(255, 0, 0);
+	glVertex3d(0, 0, 0);
+	glVertex3d(10, 0, 0);
+
+	glColor3ub(0, 255, 0);
+	glVertex3d(0, 0, 0);
+	glVertex3d(0, 10, 0);
+
+	glColor3ub(0, 0, 255);
+	glVertex3d(0, 0, 0);
+	glVertex3d(0, 0, 10);
+
+	glEnd();
+
+	glPopMatrix();
+}
+
+void
 Core::poolInputs(void)
 {
 	SDL_Event	event;

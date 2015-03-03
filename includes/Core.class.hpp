@@ -41,6 +41,7 @@ class Core
 
 		void				preMain(void);
 		void				postMain(void);
+		void				drawLandMark(void);
 		void				poolInputs(void);
 		bool				getKInput(const int scancode);
 		bool				getMInput(const int scancode);
