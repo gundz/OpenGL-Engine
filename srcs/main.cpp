@@ -1,7 +1,8 @@
 #include <iostream>
-#include <Core.class.hpp>
 #include <constant.hpp>
+#include <Core.class.hpp>
 #include <TVec3.class.hpp>
+#include <Object.class.hpp>
 
 float		x = 0;
 float		y = 0;
@@ -92,14 +93,14 @@ drawCube(int size, TVec3<float> pos)
 void
 mainEngine(const Core &core, Camera &camera)
 {
-	std::cout << camera << std::endl;
+	//std::cout << camera << std::endl;
 
 	camera.animate();
 	camera.look();
 	drawCube(1, TVec3<float>(0, 0, 0));
 	drawLandMark();
 }
-
+/*
 int
 main(void)
 {
@@ -115,5 +116,14 @@ main(void)
 
 		core.postMain();
 	}
+	return (0);
+}
+*/
+int
+main(void)
+{
+	Object			object;
+
+	object.loadObj("ressources/test.obj");
 	return (0);
 }
