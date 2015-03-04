@@ -95,7 +95,7 @@ main(void)
 
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{
-		core.preMain();
+		core.preMain();-
 		core.poolInputs();
 
 		mainEngine(core, camera);
