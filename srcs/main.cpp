@@ -77,7 +77,7 @@ mainEngine(Core &core, Camera &camera)
 	camera.animate();
 	camera.look();
 
-	glPolygonMode(GL_FRONT, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	for (int y = 0; y < 100; y++)
 	{
