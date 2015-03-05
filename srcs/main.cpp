@@ -86,7 +86,7 @@ mainEngine(Core &core, Camera &camera)
 	}
 	core.drawLandMark();
 }
-
+/*
 int
 main(void)
 {
@@ -103,4 +103,14 @@ main(void)
 		core.postMain();
 	}
 	return (0);
+}
+*/
+
+#include <Noise.class.hpp>
+
+int
+main(void)
+{
+	Noise			noise(1000, 4, 3, 0.5f, 3);
+	noise.genPerlin();
 }
