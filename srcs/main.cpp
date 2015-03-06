@@ -4,6 +4,7 @@
 #include <TVec3.class.hpp>
 #include <Object.class.hpp>
 #include <Camera.class.hpp>
+#include <Noise.class.hpp>
 
 void
 drawCube(int size, TVec3<float> pos)
@@ -58,10 +59,8 @@ drawCube(int size, TVec3<float> pos)
 }
 
 void
-drawSquare(const int x, const int y, const int size)
+drawSquare(const int x, const int y, const int z, const int size)
 {
-	int z;
-		z = 0;
 	glBegin(GL_QUADS);
 	glVertex3d(x, y, z);
 	glVertex3d(x + size, y, z);
@@ -71,46 +70,52 @@ drawSquare(const int x, const int y, const int size)
 }
 
 void
-mainEngine(Core &core, Camera &camera)
+mainEngine(Core &core, Camera &camera, Noise &noise)
 {
 
 	camera.animate();
 	camera.look();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	for (int y = 0; y < 100; y++)
+	for (int y = 0; y < noise.getSize() - 1; y++)
 	{
-		for (int x = 0; x < 100; x++)
-			drawSquare(x, y, 1);
+		for (int x = 0; x < noise.getSize() - 1; x++)
+		{
+			glBegin(GL_TRIANGLES);
+			glColor3ub(255, 255, 255);
+			glVertex3d(x, y, noise.retNoise.t[y][x]);
+			glVertex3d(x, y + 1, noise.retNoise.t[y + 1][x]);
+			glVertex3d(x + 1, y + 1, noise.retNoise.t[y + 1][x + 1]);
+			glEnd();
+
+			glBegin(GL_TRIANGLES);
+			glColor3ub(255, 255, 255);
+			glVertex3d(x, y, noise.retNoise.t[y][x]);
+			glVertex3d(x + 1, y, noise.retNoise.t[y][x + 1]);
+			glVertex3d(x + 1, y + 1, noise.retNoise.t[y + 1][x + 1]);
+			glEnd();
+		}
 	}
 	core.drawLandMark();
 }
-/*
+
 int
 main(void)
 {
 	Core			core("Test de ouf", 800, 600);
 	Camera			camera(core);
 
+	Noise			noise(250, 4, 4, 0.2f, 10);
+	noise.genPerlin();
+
 	while (!core.getKInput(SDL_SCANCODE_ESCAPE) && core.run == true)
 	{
 		core.preMain();
 		core.poolInputs();
 
-		mainEngine(core, camera);
+		mainEngine(core, camera, noise);
 
 		core.postMain();
 	}
 	return (0);
-}
-*/
-
-#include <Noise.class.hpp>
-
-int
-main(void)
-{
-	Noise			noise(1000, 4, 3, 0.5f, 3);
-	noise.genPerlin();
 }

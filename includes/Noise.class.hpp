@@ -15,9 +15,11 @@ class Noise
 		{
 			public:
 				
+				Layer(void);
 				Layer(const int size, const float p, const int maxHeight);
 				~Layer(void);
 
+				void		init(const int size, const float p, const int maxHeight);
 				int			rnd(const int max);
 				void		randomizeLayer(void);
 
@@ -26,6 +28,8 @@ class Noise
 				float		p;
 				int			maxHeight;
 		};
+
+		Layer			retNoise;
 
 		Noise(const int size, const int frequence, const int octaves, const float persistence, const int lissage);
 		Noise(Noise const &src);

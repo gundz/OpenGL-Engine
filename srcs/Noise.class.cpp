@@ -12,12 +12,32 @@ Noise::Layer::Layer(const int size, const float persistence, const int maxHeight
 	return ;
 }
 
+Noise::Layer::Layer(void)
+{
+	return ;
+}
+
 Noise::Layer::~Layer(void)
 {
 	// for (int i = 0; i < s; i++)
 	// 	delete [] t[i];
 	// delete [] t;
 	return ;
+}
+
+void
+Noise::Layer::init(const int size, const float p, const int maxHeight)
+{
+	t = new int*[size];
+	for (int i = 0; i < size; i++)
+	{
+		t[i] = new int[size];
+		for (int j = 0; j < size; j++)
+			t[i][j] = 0;
+	}
+	s = size;
+	this->p = p;
+	this->maxHeight = maxHeight;
 }
 
 int
@@ -109,8 +129,7 @@ Noise::genPerlin(void)
 	}
 
 	// lissage
-	Layer			lisse(_s, _p, _maxHeight);
-
+	retNoise.init(_s, _p, 256);
 	int l, k;
 	for (int x = 0; x < _s; x++)
 	{
@@ -127,10 +146,9 @@ Noise::genPerlin(void)
 						a += ret.t[k][l];
 					}
 			}
-			lisse.t[x][y] = (float)a/n;
+			retNoise.t[x][y] = (float)a/n;
 		}
 	}
-	std::cout << lisse;
 }
 
 int
