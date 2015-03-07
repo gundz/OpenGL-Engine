@@ -27,6 +27,7 @@ SRC +=	main.cpp \
 		Camera.class.cpp \
 		Object.class.cpp \
 		Noise.class.cpp \
+		ObjFile.class.cpp \
 
 OBJ = $(patsubst %.cpp, $(PATH_OBJ)/%.o, $(SRC))
 

@@ -23,8 +23,6 @@ class Object
 		~Object(void);
 
 		Object 					&operator = (Object const &rhs);
-
-		void					loadObj(std::string path);
 		
 		void					insertVertex(const TVec3<float> v);
 		mapVec3f const	 		&getVertex(void) const;
