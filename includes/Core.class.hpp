@@ -25,6 +25,8 @@ class Core
 		{
 			Uint32			fps;
 			Uint32			current;
+			Uint32			previous;
+			int				framecount;
 			Uint32			update;
 			std::string		text;
 		}					t_timer;

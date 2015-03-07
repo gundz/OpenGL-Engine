@@ -43,6 +43,8 @@ Core::Core(std::string name, const int RX, const int RY) : _name(name), _RX(RX),
 		in.button[i] = false;
 	_fps.fps = 0;
 	_fps.current = 0;
+	_fps.previous = 0;
+	_fps.framecount = 0;
 	_fps.update = 0;
 
 	glEnable(GL_DEPTH_TEST);
@@ -50,7 +52,7 @@ Core::Core(std::string name, const int RX, const int RY) : _name(name), _RX(RX),
 	
 	//glEnable(GL_POLYGON_FLAT);
 	glLoadIdentity();
-	gluPerspective(70, (double)RX / RY, 0.01, 20000);	
+	gluPerspective(70, (double)RX / RY, 0.01, 200000);	
 	return ;
 }
 
@@ -92,15 +94,21 @@ Core::postMain(void)
 
 	std::ostringstream			oss;
 
-	if ((_fps.update = SDL_GetTicks()) - _fps.current >= 1000)
-	{
-		_fps.current = _fps.update;
+    _fps.framecount++;
+    _fps.current = SDL_GetTicks();
+    int timeInterval = _fps.current - _fps.previous;
+
+    if(timeInterval > 1000)
+    {
+        _fps.fps = _fps.framecount / (timeInterval / 1000.0f);
+		
 		oss << _name << " - " << _fps.fps << " FPS";
 		_fps.text = oss.str();
 		SDL_SetWindowTitle(_window, _fps.text.c_str());
-		_fps.fps = 0;
-	}
-	_fps.fps++;
+        
+        _fps.previous = _fps.current;
+        _fps.framecount = 0;
+    }
 }
 
 void
@@ -140,7 +148,7 @@ Core::poolInputs(void)
 		if (event.type == SDL_KEYDOWN)
 		{
 			this->in.key[event.key.keysym.scancode] = true;
- 			break ;
+			break ;
 		}
 		else if (event.type == SDL_KEYUP)
 		{
