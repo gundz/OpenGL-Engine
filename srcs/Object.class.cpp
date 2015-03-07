@@ -77,30 +77,38 @@ Object::insertVertex(const Vec3f v)
 	_vertex.insert(std::pair<int, Vec3f>(_nbVertex++, v));
 }
 
+Object::mapVec3f const &
+Object::getVertex(void) const
+{
+	return (_vertex);
+}
+
+unsigned int
+Object::getNbVertex(void) const
+{
+	return (_nbVertex);
+}
+
 void
 Object::insertFace(const Vec3i f)
 {
 	_faces.insert(std::pair<int, Vec3i>(_nbFaces++, f));
 }
 
-void
-Object::showVertex(void)
+Object::mapVec3i const &
+Object::getFaces(void) const
 {
-	for (unsigned int i = 0; i < _vertex.size(); i++)
-		std::cout << i << " -  x : " << _vertex[i].x << " y : " << _vertex[i].y << " z : " << _vertex[i].z << std::endl;
-	std::cout << std::endl;
+	return (_faces);
+}
+
+unsigned int
+Object::getNbFaces(void) const
+{
+	return (_nbFaces);
 }
 
 void
-Object::showFaces(void)
-{
-	for (unsigned int i = 0; i < _faces.size(); i++)
-		std::cout << i << " - " << _faces[i].x << " " << _faces[i].y << " " << _faces[i].z << std::endl;
-	std::cout << std::endl;
-}
-
-void
-Object::show(void)
+Object::showDirect(void)
 {
 	TVec3<float>		tmp;
 
@@ -119,8 +127,24 @@ Object::show(void)
 }
 
 std::ostream &
-operator << (std::ostream &o, Object const &i)
+operator << (std::ostream &o, Object const &src)
 {
-	o	<< "Object: " << &i;
+	o	<< "Object: " << std::endl;
+
+	//Show Vertex
+	Object::mapVec3f	vertex = src.getVertex();
+	unsigned int		nbVertex = src.getNbVertex();
+
+	for (unsigned int i = 0; i < nbVertex; i++)
+		o << i << " -  x : " << vertex[i].x << " y : " << vertex[i].y << " z : " << vertex[i].z << std::endl;
+	o << std::endl;
+
+	// //Show Faces
+	Object::mapVec3i	faces = src.getFaces();
+	unsigned int		nbFaces = src.getNbFaces();
+
+	for (unsigned int i = 0; i < nbFaces; i++)
+		o << i << " - " << faces[i].x << " " << faces[i].y << " " << faces[i].z << std::endl;
+	o << std::endl;
 	return (o);
 }
