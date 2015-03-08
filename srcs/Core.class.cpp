@@ -17,6 +17,9 @@ Core::Core(std::string name, const int RX, const int RY) : _name(name), _RX(RX),
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
+	// glEnable(GL_CULL_FACE);
+	// glCullFace(GL_FRONT);
+
 	_window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, RX, RY, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
 
 	if (this->_window == 0)

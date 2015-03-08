@@ -7,19 +7,6 @@
 #include <Noise.class.hpp>
 
 void
-drawSquare(const int x, const int y, const int z, const int size)
-{
-
-	glBegin(GL_QUADS);
-	glVertex3d(x, y, z);
-	glVertex3d(x + size, y, z);
-	glVertex3d(x + size, y + size, z);
-	glVertex3d(x, y + size, z);
-	glEnd();
-
-}
-
-void
 mainEngine(Core &core, Camera &camera, Noise &noise)
 {
 
@@ -36,7 +23,6 @@ mainEngine(Core &core, Camera &camera, Noise &noise)
 	{
 		for (int x = 0; x < noise.getSize() - 1; x++)
 		{
-			
 			glBegin(GL_TRIANGLES);
 			glColor3ub(0, noise.retNoise.t[y][x] % 256,0);
 			glVertex3d(x, y, noise.retNoise.t[y][x]);

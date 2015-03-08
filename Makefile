@@ -2,7 +2,7 @@ NAME = Project
 
 CC =  g++
 
-CFLAGS = -Wall -Werror -Wextra -g -lm
+CFLAGS = -Wall -Werror -Wextra -g -lm -O3
 CFLAGS += `sdl2-config --cflags` -std=gnu++11
 
 LFLAGS += `sdl2-config --libs`
@@ -28,6 +28,7 @@ SRC +=	main.cpp \
 		Object.class.cpp \
 		Noise.class.cpp \
 		ObjFile.class.cpp \
+		Map.class.cpp \
 
 OBJ = $(patsubst %.cpp, $(PATH_OBJ)/%.o, $(SRC))
 
